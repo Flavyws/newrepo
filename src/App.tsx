@@ -1,6 +1,7 @@
 import { AuthProvider, useAuth } from "@/hooks/useAuth"
 import { LoginPage } from "@/pages/LoginPage"
 import { AppShell } from "@/components/layout/AppShell"
+import { FarmPage } from "@/pages/FarmPage"
 import { PlantingsPage } from "@/pages/PlantingsPage"
 import { HarvestsPage } from "@/pages/HarvestsPage"
 import { SalesPage } from "@/pages/SalesPage"
@@ -25,6 +26,7 @@ function AppContent() {
     <AppShell
       defaultTab="plantings"
       tabs={[
+        { value: "farm", label: "Fermă", content: <FarmPage /> },
         { value: "plantings", label: "Cultivare", content: <PlantingsPage /> },
         { value: "harvests", label: "Recoltare", content: <HarvestsPage /> },
         { value: "sales", label: "Vânzări", content: <SalesPage /> },
