@@ -15,9 +15,11 @@ export function AppShell({ tabs, defaultTab }: AppShellProps) {
   const activeTab = tabs.find((t) => t.value === active)
 
   return (
-    <div className="min-h-screen flex bg-[var(--background)]">
+    <div className="min-h-screen flex flex-col md:flex-row bg-[var(--background)]">
       <Sidebar active={active} onNavigate={setActive} />
-      <main className="flex-1 px-8 py-8 max-w-4xl">{activeTab?.content}</main>
+      <main className="flex-1 min-w-0 px-4 py-6 pb-24 md:px-8 md:py-8 md:pb-8 md:max-w-4xl">
+        {activeTab?.content}
+      </main>
     </div>
   )
 }
