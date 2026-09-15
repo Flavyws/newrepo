@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app"
-import { getFirestore } from "firebase/firestore"
+import { initializeFirestore } from "firebase/firestore"
 import { getAuth } from "firebase/auth"
 
 const firebaseConfig = {
@@ -12,5 +12,8 @@ const firebaseConfig = {
 }
 
 export const app = initializeApp(firebaseConfig)
-export const db = getFirestore(app)
+// ignoreUndefinedProperties: optional form fields (notes, area, etc.) get
+// set to `undefined` when left empty; Firestore rejects `undefined` values
+// by default, so this makes it silently skip them instead of throwing.
+export const db = initializeFirestore(app, { ignoreUndefinedProperties: true })
 export const auth = getAuth(app)
