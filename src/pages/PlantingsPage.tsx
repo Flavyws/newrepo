@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { Pencil, Plus, Sprout, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -11,7 +11,15 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { PlantingFormDialog } from "@/components/plantings/PlantingFormDialog"
+import { SeasonSwitcher } from "@/components/season/SeasonSwitcher"
 import { usePlantings, type Planting, type PlantingInput } from "@/hooks/usePlantings"
+import {
+  currentSeason,
+  listSeasons,
+  matchesSeason,
+  seasonsEqual,
+  type Season,
+} from "@/lib/season"
 
 function formatDate(value?: string) {
   if (!value) return "—"
@@ -29,6 +37,28 @@ export function PlantingsPage() {
     usePlantings()
   const [dialogOpen, setDialogOpen] = useState(false)
   const [editingPlanting, setEditingPlanting] = useState<Planting | null>(null)
+  const [selectedSeason, setSelectedSeason] = useState<Season | null>(currentSeason())
+
+  const seasons = useMemo(
+    () => listSeasons(plantings.map((p) => p.plantingDate)),
+    [plantings]
+  )
+
+  const visiblePlantings = useMemo(
+    () =>
+      selectedSeason
+        ? plantings.filter((p) => matchesSeason(p.plantingDate, selectedSeason))
+        : plantings,
+    [plantings, selectedSeason]
+  )
+
+  const isCurrentSeasonEmpty =
+    !loading &&
+    !error &&
+    plantings.length > 0 &&
+    selectedSeason !== null &&
+    seasonsEqual(selectedSeason, currentSeason()) &&
+    visiblePlantings.length === 0
 
   const openCreateDialog = () => {
     setEditingPlanting(null)
@@ -66,10 +96,19 @@ export function PlantingsPage() {
             Aici vei ține evidența culturilor plantate — în seră sau în grădină.
           </p>
         </div>
-        <Button onClick={openCreateDialog}>
-          <Plus data-icon="inline-start" />
-          Adaugă
-        </Button>
+        <div className="flex items-center gap-2">
+          {seasons.length > 0 && (
+            <SeasonSwitcher
+              seasons={seasons}
+              value={selectedSeason}
+              onChange={setSelectedSeason}
+            />
+          )}
+          <Button onClick={openCreateDialog}>
+            <Plus data-icon="inline-start" />
+            Adaugă
+          </Button>
+        </div>
       </div>
 
       {error ? (
@@ -91,6 +130,16 @@ export function PlantingsPage() {
             Adaugă prima plantare
           </Button>
         </div>
+      ) : isCurrentSeasonEmpty ? (
+        <div className="flex flex-col items-center gap-2 rounded-xl bg-card py-12 text-center ring-1 ring-foreground/10">
+          <Sprout className="text-muted-foreground" size={28} strokeWidth={1.5} />
+          <p className="text-sm text-muted-foreground">
+            Nicio plantare în sezonul curent.
+          </p>
+          <Button variant="outline" size="sm" onClick={() => setSelectedSeason(null)}>
+            Arată toate sezoanele
+          </Button>
+        </div>
       ) : (
         <Table>
           <TableHeader>
@@ -105,7 +154,7 @@ export function PlantingsPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {plantings.map((planting) => (
+            {visiblePlantings.map((planting) => (
               <TableRow key={planting.id}>
                 <TableCell className="font-medium text-foreground">
                   {planting.crop}
