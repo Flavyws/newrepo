@@ -88,7 +88,7 @@ export function HarvestFormDialog({
     reset,
     watch,
     formState: { isSubmitting },
-  } = useForm<HarvestFormValues>({
+  } = useForm<z.input<typeof harvestSchema>, unknown, HarvestFormValues>({
     resolver: zodResolver(harvestSchema),
     defaultValues: emptyValues(),
   })
@@ -196,7 +196,14 @@ export function HarvestFormDialog({
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="quantity">Cantitate</FieldLabel>
-                    <Input id="quantity" type="number" step="0.1" min="0" {...field} />
+                    <Input
+                      id="quantity"
+                      type="number"
+                      step="0.1"
+                      min="0"
+                      {...field}
+                      value={(field.value as number | string | undefined) ?? ""}
+                    />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}

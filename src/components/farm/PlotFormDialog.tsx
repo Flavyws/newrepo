@@ -52,7 +52,7 @@ export function PlotFormDialog({ open, onOpenChange, plot, onSubmit }: PlotFormD
     handleSubmit,
     reset,
     formState: { isSubmitting },
-  } = useForm<PlotFormValues>({
+  } = useForm<z.input<typeof plotSchema>, unknown, PlotFormValues>({
     resolver: zodResolver(plotSchema),
     defaultValues: EMPTY_VALUES,
   })
@@ -140,7 +140,7 @@ export function PlotFormDialog({ open, onOpenChange, plot, onSubmit }: PlotFormD
                       min="0"
                       placeholder="opțional"
                       {...field}
-                      value={field.value ?? ""}
+                      value={(field.value as number | string | undefined) ?? ""}
                     />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>

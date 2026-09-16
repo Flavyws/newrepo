@@ -78,7 +78,7 @@ export function SaleFormDialog({ open, onOpenChange, sale, onSubmit }: SaleFormD
     reset,
     watch,
     formState: { isSubmitting },
-  } = useForm<SaleFormValues>({
+  } = useForm<z.input<typeof saleSchema>, unknown, SaleFormValues>({
     resolver: zodResolver(saleSchema),
     defaultValues: emptyValues(),
   })
@@ -178,7 +178,14 @@ export function SaleFormDialog({ open, onOpenChange, sale, onSubmit }: SaleFormD
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="quantity">Cantitate</FieldLabel>
-                    <Input id="quantity" type="number" step="0.1" min="0" {...field} />
+                    <Input
+                      id="quantity"
+                      type="number"
+                      step="0.1"
+                      min="0"
+                      {...field}
+                      value={(field.value as number | string | undefined) ?? ""}
+                    />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
@@ -190,7 +197,14 @@ export function SaleFormDialog({ open, onOpenChange, sale, onSubmit }: SaleFormD
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="pricePerUnit">Preț/unitate (lei)</FieldLabel>
-                    <Input id="pricePerUnit" type="number" step="0.1" min="0" {...field} />
+                    <Input
+                      id="pricePerUnit"
+                      type="number"
+                      step="0.1"
+                      min="0"
+                      {...field}
+                      value={(field.value as number | string | undefined) ?? ""}
+                    />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}

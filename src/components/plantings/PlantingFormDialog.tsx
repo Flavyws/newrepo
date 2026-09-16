@@ -72,7 +72,7 @@ export function PlantingFormDialog({
     handleSubmit,
     reset,
     formState: { isSubmitting },
-  } = useForm<PlantingFormValues>({
+  } = useForm<z.input<typeof plantingSchema>, unknown, PlantingFormValues>({
     resolver: zodResolver(plantingSchema),
     defaultValues: EMPTY_VALUES,
   })
@@ -200,6 +200,7 @@ export function PlantingFormDialog({
                       step="1"
                       min="0"
                       {...field}
+                      value={(field.value as number | string | undefined) ?? ""}
                     />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
