@@ -5,6 +5,7 @@ import { FarmPage } from "@/pages/FarmPage"
 import { PlantingsPage } from "@/pages/PlantingsPage"
 import { HarvestsPage } from "@/pages/HarvestsPage"
 import { SalesPage } from "@/pages/SalesPage"
+import { ExpensesPage } from "@/pages/ExpensesPage"
 import { StatsPage } from "@/pages/StatsPage"
 
 function AppContent() {
@@ -30,6 +31,7 @@ function AppContent() {
         { value: "plantings", label: "Cultivare", content: <PlantingsPage /> },
         { value: "harvests", label: "Recoltare", content: <HarvestsPage /> },
         { value: "sales", label: "Vânzări", content: <SalesPage /> },
+        { value: "expenses", label: "Cheltuieli", content: <ExpensesPage /> },
         { value: "stats", label: "Statistici", content: <StatsPage /> },
       ]}
     />

@@ -1,4 +1,4 @@
-import { Sprout, Wheat, ShoppingBasket, BarChart3, Warehouse, LogOut } from "lucide-react"
+import { Sprout, Wheat, ShoppingBasket, Receipt, BarChart3, Warehouse, LogOut } from "lucide-react"
 import { useAuth } from "@/hooks/useAuth"
 
 interface SidebarProps {
@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { value: "plantings", label: "Cultivare", icon: Sprout },
   { value: "harvests", label: "Recoltare", icon: Wheat },
   { value: "sales", label: "Vânzări", icon: ShoppingBasket },
+  { value: "expenses", label: "Cheltuieli", icon: Receipt },
   { value: "stats", label: "Statistici", icon: BarChart3 },
 ]
 
